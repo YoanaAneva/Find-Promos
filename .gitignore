@@ -1,2 +1,5 @@
 .vscode/
 failure.py
+
+__pycache__/
+*.pyc
