@@ -18,12 +18,18 @@ def search_lidl(word) :
         html = driver.page_source
         soup = BeautifulSoup(html, "html.parser")
 
-        products = soup.select(".product-grid-box__content")
+        products = soup.select(".odsc-tile__inner")
         for product in products :
             discount = product.select_one(".ods-price__box-wrapper")
             if discount :
                 title = product.select_one(".product-grid-box__title").text
                 if word.lower() in title.lower() :
+
+                    image_src = "assets/no-photo.jpg"
+                    image = product.select_one(".odsc-image-gallery__image")
+                    if image :
+                        image_src = image["src"]
+
                     quantity = product.select(".ods-price__footer")[1].text
                     period = product.select_one(".ods-badge__label").text
 
@@ -31,8 +37,8 @@ def search_lidl(word) :
                     price_bgn = prices[0].text
                     price_eur = prices[1].text
 
-                    old_price_bgn = "none"
-                    old_price_eur = "none"
+                    old_price_bgn = None
+                    old_price_eur = None
                     old_price = product.select_one(".ods-price__stroke-price")
                     if old_price :
                         old_prices = old_price.text.split("(")
@@ -42,12 +48,13 @@ def search_lidl(word) :
                     results.append({
                         "supermarket" : "Lidl",
                         "title" : title,
+                        "image_src" : image_src,
                         "quantity" : quantity,
-                        "period" : period,
-                        "old_price_bgn" : old_price_bgn,
-                        "old_price_eur" : old_price_eur,
                         "price_bgn" : price_bgn,
                         "price_eur" : price_eur,
+                        "old_price_bgn" : old_price_bgn,
+                        "old_price_eur" : old_price_eur,
+                        "period" : period,
                         "is_two_for_one" : False
                     })
 

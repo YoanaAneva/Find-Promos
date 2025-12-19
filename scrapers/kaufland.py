@@ -15,6 +15,13 @@ def search_kaufland(word) :
         description = product.select_one(".k-product-tile__subtitle").text
 
         if (word.lower() in title.lower() or word.lower() in description.lower()) :
+            image_src = None
+            image = product.select_one(".k-image")
+            if image :
+                image_src = image["src"]
+                if "media.kaufland" in image_src :
+                    image_src = None
+                                   
             prices = product.select(".k-price-tag__price")
             price_bgn = prices[0].text
             price_eur = prices[1].text
@@ -23,22 +30,22 @@ def search_kaufland(word) :
             period = product.select_one(".k-eye-catcher").text
 
             old_prices = product.select(".k-price-tag__old-price-line-through")
+            old_price_bgn = None
+            old_price_eur = None
             if (len(old_prices) > 0) :
                 old_price_bgn = old_prices[0].text
                 old_price_eur = old_prices[1].text
-            else :
-                old_price_bgn = "none"
-                old_price_eur = "none"
 
             results.append({
                 "supermarket" : "Kaufland",
-                "title" : title,
+                "title" : title + " " + description,
+                "image_src" : image_src,
                 "quantity" : quantity,
-                "period" : period,
-                "old_price_bgn" : old_price_bgn,
-                "old_price_eur" : old_price_eur,
                 "price_bgn" : price_bgn,
                 "price_eur" : price_eur,
+                "old_price_bgn" : old_price_bgn,
+                "old_price_eur" : old_price_eur,
+                "period" : period,
                 "is_two_for_one" : False
             })
     return results

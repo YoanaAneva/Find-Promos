@@ -23,13 +23,18 @@ def search_tmarket(word) :
         html = driver.page_source
         soup = BeautifulSoup(html, "html.parser")
 
-        products = soup.select("._product-info")
+        products = soup.select("._product-inner")
         for product in products :
             discount = product.select_one(".has-discount")  
             if (discount) :
                 title = product.select_one("._product-name-tag").text
 
                 if (word.lower() in title.lower()) :
+                    image_src = "assets/no-photo.jpg"
+                    image = product.select_one("._product-image-thumb-holder .lazyload-image")
+                    if image :
+                        image_src = image["src"]
+
                     price_bgn = product.select_one(".bgn2eur-primary-currency").text
                     price_eur = product.select_one(".bgn2eur-secondary-currency").text
 
@@ -39,12 +44,13 @@ def search_tmarket(word) :
                     results.append({
                         "supermarket" : "TMarket",
                         "title" : title,
-                        "quantity" : "none",
-                        "period" : "none",
-                        "old_price_bgn" : old_price_bgn,
-                        "old_price_eur" : old_price_eur,
+                        "image_src" : image_src,
+                        "quantity" : None,
                         "price_bgn" : price_bgn,
                         "price_eur" : price_eur,
+                        "old_price_bgn" : old_price_bgn,
+                        "old_price_eur" : old_price_eur,
+                        "period" : None,
                         "is_two_for_one" : False
                     })
     finally :

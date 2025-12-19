@@ -17,20 +17,26 @@ def search_billa(word) :
 
             prices = product.select(".price")
             if prices :
-                price_bgn = prices[2].text
-                price_eur = prices[3].text
-                old_price_bgn = prices[0].text
-                old_price_eur = prices[1].text
-
+                if len(prices) > 2:
+                    price_bgn = prices[2].text
+                    price_eur = prices[3].text
+                    old_price_bgn = prices[0].text
+                    old_price_eur = prices[1].text
+                else :
+                    price_bgn = prices[0].text
+                    price_eur = prices[1].text
+                    old_price_bgn = None
+                    old_price_eur = None
                 results.append({
                     "supermarket" : "Billa",
                     "title" : title,
-                    "quantity" : "none",
-                    "period" : "none",
-                    "old_price_bgn" : old_price_bgn,
-                    "old_price_eur" : old_price_eur,
+                    "image_src" : None,
+                    "quantity" : None,
                     "price_bgn" : price_bgn,
                     "price_eur" : price_eur,
+                    "old_price_bgn" : old_price_bgn,
+                    "old_price_eur" : old_price_eur,
+                    "period" : None,
                     "is_two_for_one" : False
                 })
  
