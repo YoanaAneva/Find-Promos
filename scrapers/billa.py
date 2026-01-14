@@ -18,13 +18,13 @@ def search_billa(word) :
             prices = product.select(".price")
             if prices :
                 if len(prices) > 2:
-                    price_bgn = prices[2].text
-                    price_eur = prices[3].text
-                    old_price_bgn = prices[0].text
-                    old_price_eur = prices[1].text
+                    price_bgn = prices[3].text
+                    price_eur = prices[2].text
+                    old_price_bgn = prices[1].text + " лв."
+                    old_price_eur = prices[0].text + " €"
                 else :
-                    price_bgn = prices[0].text
-                    price_eur = prices[1].text
+                    price_bgn = prices[1].text
+                    price_eur = prices[0].text
                     old_price_bgn = None
                     old_price_eur = None
                 results.append({
@@ -32,8 +32,8 @@ def search_billa(word) :
                     "title" : title,
                     "image_src" : None,
                     "quantity" : None,
-                    "price_bgn" : price_bgn,
-                    "price_eur" : price_eur,
+                    "price_bgn" : price_bgn + " лв.",
+                    "price_eur" : price_eur + " €",
                     "old_price_bgn" : old_price_bgn,
                     "old_price_eur" : old_price_eur,
                     "period" : None,
